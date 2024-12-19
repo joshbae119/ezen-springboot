@@ -50,7 +50,18 @@ jobs:
           set -e  # 에러 발생 시 즉시 중단
           ssh $USER@$HOST "cp ~/application.properties.backup /home/ubuntu/ezen-springboot/Board/src/main/resources/application.properties"
 
-      # 5. EC2에서 Gradle 빌드 실행
+      # 5. Dependency 체크 및 업데이트
+      - name: Check Dependencies on EC2
+        run: |
+          set -e  # 에러 발생 시 즉시 중단
+          ssh $USER@$HOST "cd /home/ubuntu/ezen-springboot/Board && ./gradlew dependencies"
+
+      - name: Update Dependencies on EC2
+        run: |
+          set -e  # 에러 발생 시 즉시 중단
+          ssh $USER@$HOST "cd /home/ubuntu/ezen-springboot/Board && ./gradlew --refresh-dependencies"
+
+      # 6. EC2에서 Gradle 빌드 실행
       - name: Clean Project on EC2
         run: |
           set -e  # 에러 발생 시 즉시 중단
@@ -61,13 +72,13 @@ jobs:
           set -e  # 에러 발생 시 즉시 중단
           ssh $USER@$HOST "cd /home/ubuntu/ezen-springboot/Board && ./gradlew build"
 
-      # 6. EC2에서 테스트 실행
+      # 7. EC2에서 테스트 실행
       - name: Test on EC2
         run: |
           set -e  # 에러 발생 시 즉시 중단
           ssh $USER@$HOST "cd /home/ubuntu/ezen-springboot/Board && ./gradlew test"
 
-      # 7. EC2에서 애플리케이션 배포
+      # 8. EC2에서 애플리케이션 배포
       - name: Deploy Application on EC2
         run: |
           set -e  # 에러 발생 시 즉시 중단
