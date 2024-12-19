@@ -1,4 +1,4 @@
-name: Ezen-SpringBoot CICD V004
+name: Ezen-SpringBoot CICD V003
 
 on:
   push:
@@ -42,35 +42,40 @@ jobs:
             fi
           "
 
-      # 4. EC2에서 Gradle 빌드 실행
+      # 4. Gradle 빌드 전에 설정 파일 복사
+      - name: Copy application.properties
+        run: |
+          ssh $USER@$HOST "cp ~/application.properties.backup /home/ubuntu/ezen-springboot/Board/src/main/resources/application.properties"
+
+      # 5. EC2에서 Gradle 빌드 실행
       - name: Build on EC2
         run: |
           ssh $USER@$HOST "cd /home/ubuntu/ezen-springboot/Board && ./gradlew build"
 
-      # 5. EC2에서 테스트 실행
+      # 6. EC2에서 테스트 실행
       - name: Test on EC2
         run: |
           ssh $USER@$HOST "cd /home/ubuntu/ezen-springboot/Board && ./gradlew test"
 
-      # 6. EC2에서 애플리케이션 배포
+      # 7. EC2에서 애플리케이션 배포
       - name: Deploy Application on EC2
         run: |
           ssh $USER@$HOST "nohup java -jar /home/ubuntu/ezen-springboot/Board/build/libs/Board-0.0.1-SNAPSHOT.jar > /home/ubuntu/app/app.log 2>&1 &"
 
-      # 7. 워크플로 업데이트 후 커밋 및 푸시
-      - name: Push Workflow Updates
-        uses: actions/checkout@v4
+      # # 8. 워크플로 업데이트 후 커밋 및 푸시
+      # - name: Push Workflow Updates
+      #   uses: actions/checkout@v4
 
-      - name: Update Repository
-        env:
-          GITHUB_TOKEN: ${{ secrets.EZEN_GITFLOW_TOKEN }}
-        run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "your-email@example.com"
-          if [ -n "$(git status --porcelain)" ]; then
-            git add .github/workflows/main.yml
-            git commit -m "Update main.yml workflow"
-            git push
-          else
-            echo "No changes to commit."
-          fi
+      # - name: Update Repository
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.EZEN_GITFLOW_TOKEN }}
+      #   run: |
+      #     git config --global user.name "Your Name"
+      #     git config --global user.email "your-email@example.com"
+      #     if [ -n "$(git status --porcelain)" ]; then
+      #       git add .github/workflows/main.yml
+      #       git commit -m "Update main.yml workflow"
+      #       git push
+      #     else
+      #       echo "No changes to commit."
+      #     fi
