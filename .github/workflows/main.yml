@@ -1,4 +1,4 @@
-name: Ezen Spring Boot Deployment
+name: Ezen-SpringBoot CICD V001
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     env: # 공통 환경 변수 설정
       HOST: ${{ secrets.EC2_EZEN_SPRING_HOST }}
