@@ -24,6 +24,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_EZEN_SPRING_KEY }}
         run: |
+          mkdir -p ~/.ssh  # ~/.ssh 디렉토리 생성 (이미 존재해도 안전)
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
