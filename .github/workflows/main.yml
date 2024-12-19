@@ -1,4 +1,4 @@
-name: Ezen-SpringBoot CICD V003
+name: Ezen-SpringBoot CICD V004
 
 on:
   push:
@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-24.04
+
+    environment: EZEN # GitHub 환경 설정 (Environments에서 'EZEN' 사용)
 
     env: # 공통 환경 변수 설정
       HOST: ${{ secrets.EC2_EZEN_SPRING_HOST }}
