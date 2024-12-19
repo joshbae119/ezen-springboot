@@ -1,4 +1,4 @@
-name: Ezen-SpringBoot CICD V002
+name: Ezen-SpringBoot CICD V003
 
 on:
   push:
