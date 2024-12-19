@@ -67,6 +67,10 @@ jobs:
         run: |
           git config --global user.name "Your Name"
           git config --global user.email "your-email@example.com"
-          git add .github/workflows/main.yml
-          git commit -m "Update main.yml workflow"
-          git push
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .github/workflows/main.yml
+            git commit -m "Update main.yml workflow"
+            git push
+          else
+            echo "No changes to commit."
+          fi
