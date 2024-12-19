@@ -1,4 +1,4 @@
-name: Ezen-SpringBoot CICD V001
+name: Ezen-SpringBoot CICD V002
 
 on:
   push:
@@ -54,3 +54,17 @@ jobs:
       - name: Deploy Application on EC2
         run: |
           ssh $USER@$HOST "nohup java -jar /home/ubuntu/ezen-springboot/Board/build/libs/Board-0.0.1-SNAPSHOT.jar > /home/ubuntu/app/app.log 2>&1 &"
+
+      # 7. 워크플로 업데이트 후 커밋 및 푸시
+      - name: Push Workflow Updates
+        uses: actions/checkout@v4
+
+      - name: Update Repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.EZEN_GITFLOW_TOKEN }}
+        run: |
+          git config --global user.name "Your Name"
+          git config --global user.email "your-email@example.com"
+          git add .github/workflows/main.yml
+          git commit -m "Update main.yml workflow"
+          git push
