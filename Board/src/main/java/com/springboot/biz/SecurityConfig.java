@@ -22,7 +22,10 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http
 		.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll());
+				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+			.formLogin((formLogin)->formLogin
+					.loginPage("/user/login")
+					.defaultSuccessUrl("/"));
 		
 		//authorizeHttpRequests: 특정경로에 대한 연결 설정
 		//requestMatchers: 특정 경로의 요청에 대한 연결 허용
