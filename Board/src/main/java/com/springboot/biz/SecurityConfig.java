@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration    //스프링 환경 설정 파일
+@Configuration    //스프링 환경 설정 파일 입니다.
 @EnableWebSecurity   //모든 URL 요처을 스프링 시큐리티의 제어를 받도록 설정 시큐리티 활성화
 @EnableMethodSecurity(prePostEnabled = true) //질문등록 답변 등록 메소지 위에 설정한 @PreAuthorize 사용설정
 public class SecurityConfig {
