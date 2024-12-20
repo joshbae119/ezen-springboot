@@ -15,13 +15,15 @@
 			<thead class="table-dark">
 				<tr>
 					<td>번호</td>
-					<td>제목</td>
+					<td sytle="width:50%">제목</td>
+					<th>작성자</th>
 					<td>작성일자</td>
 				</tr>
 			</thead>
+			
+			
 			<tbody>
 				<tr th:each="question, loop : ${paging}">
-					<!--<td th:text="${loop.count}"></td>-->
 					<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td> 
 					<td><a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
 					
@@ -29,12 +31,15 @@
 					  <span class="text-danger small ms-2" th:if="${#lists.size(question.answerList) > 0}"
 					        th:text="${#lists.size(question.answerList)}">
 					  </span>
-					  
-					  
 					</td>
+					<td><span th:if="${question.author != null}"
+					th:text="${question.author.username}"></span></td>
+					
 					<td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
 				</tr>
 			</tbody>
+			
+			
 		</table>
 		<!-- 페이징 처리 시작 -->
 			<div th:if="${!paging.isEmpty()}">
