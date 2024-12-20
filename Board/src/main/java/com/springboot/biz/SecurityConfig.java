@@ -27,7 +27,11 @@ public class SecurityConfig {
 				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 			.formLogin((formLogin)->formLogin
 					.loginPage("/user/login")
-					.defaultSuccessUrl("/"));
+					.defaultSuccessUrl("/"))
+			.logout((logout)-> logout
+					.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+					.logoutSuccessUrl("/")
+					.invalidateHttpSession(true));
 		
 		//authorizeHttpRequests: 특정경로에 대한 연결 설정
 		//requestMatchers: 특정 경로의 요청에 대한 연결 허용
