@@ -28,7 +28,7 @@ public class AnswerController {
 	private final AnswerService answerService;
 	private final UserService userService;
 	
-	//validation 적용 전
+	//validation 적용 전 ----
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/{id}")
 	public String createAnswer(Model model, @PathVariable("id") Integer id, 
