@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,41 +13,45 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration    //스프링 환경 설정 파일 입니다.
-@EnableWebSecurity   //모든 URL 요처을 스프링 시큐리티의 제어를 받도록 설정 시큐리티 활성화
-@EnableMethodSecurity(prePostEnabled = true) //질문등록 답변 등록 메소지 위에 설정한 @PreAuthorize 사용설정
+//@Configuration 애너테이션은 해당 클래스가 스프링 컨테이너에 의해 
+//설정(bean 정의) 클래스임을 나타냅니다.
+@Configuration
+
+//@EnableWebSecurity 애너테이션은 스프링 시큐리티의 웹 보안 기능을 활성화합니다.
+//스프링 부트 프로젝트에서 보안을 구성할 수 있게 해줍니다.
+@EnableMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
 public class SecurityConfig {
-	
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Bean
-	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		http
-		.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-			.formLogin((formLogin)->formLogin
-					.loginPage("/user/login")
-					.defaultSuccessUrl("/"))
-			.logout((logout)-> logout
-					.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-					.logoutSuccessUrl("/")
-					.invalidateHttpSession(true));
-		
-		//authorizeHttpRequests: 특정경로에 대한 연결 설정
-		//requestMatchers: 특정 경로의 요청에 대한 연결 허용
-		//AntPathRequestMatcher: 특정 경로를 설정
-		//permitAll: 누구나 접근이 가능하게 설정
-		return http.build();
-	}
-	
-	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-		return authenticationConfiguration.getAuthenticationManager();
-	}
-	
-	
+
+ // SecurityFilterChain: 필터 체인을 정의하여 HTTP 요청에 대한 보안 설정을 구성합니다.
+ // 스프링 시큐리티 5.x부터는 SecurityFilterChain을 사용해 설정하는 것이 권장됩니다.
+ @Bean
+ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+     // HttpSecurity 객체를 사용해 보안 규칙을 설정합니다.
+     http.authorizeHttpRequests( 
+         // authorizeHttpRequests는 HTTP 요청의 접근 권한을 설정합니다.
+         (authorizeHttpRequests) -> authorizeHttpRequests
+             // AntPathRequestMatcher를 사용해 특정 경로에 대한 접근 권한을 설정합니다.
+             // requestMatchers("/**")는 모든 경로에 대해 접근을 허용합니다.
+             .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+     		.formLogin((formLogin)->formLogin.loginPage("/user/login").defaultSuccessUrl("/"))
+     		
+     		.logout((logout)->logout.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+     				.logoutSuccessUrl("/").invalidateHttpSession(true));
+
+     // 설정이 완료된 HttpSecurity 객체를 필터 체인으로 반환합니다.
+     return http.build();
+ }
+ 
+ @Bean
+ PasswordEncoder passwordEncoder() {
+	 return new BCryptPasswordEncoder();
+ }
+ 
+ @Bean
+ AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+	 return authenticationConfiguration.getAuthenticationManager();
+ }
+ 
 
 }
