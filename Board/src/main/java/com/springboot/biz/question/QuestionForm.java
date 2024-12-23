@@ -10,9 +10,9 @@ import lombok.Setter;
 public class QuestionForm {
 
 	@NotEmpty(message = "제목을 입력하세요")
-	@Size(max=200)
+	@Size(max = 200)
 	private String subject;
-	
-	@NotEmpty(message ="내용을 입력하세요")
+
+	@NotEmpty(message = "내용을 입력하세요")
 	private String content;
 }

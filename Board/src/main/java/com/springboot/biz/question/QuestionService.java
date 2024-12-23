@@ -18,16 +18,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class QuestionService { //INSERT, SELECT, UPDATE, DELETE 등의 역할
+public class QuestionService { // INSERT, SELECT, UPDATE, DELETE 등의 역할
 	private final QuestionRepository questionRepository;
-	
-	public void modify(Question question,String subject, String content) {
+
+	public void modify(Question question, String subject, String content) {
 		question.setSubject(subject);
 		question.setContent(content);
 		question.setModifyDate(LocalDateTime.now());
 		this.questionRepository.save(question);
 	}
-	
+
 	public void create(String string, String content, SiteUser user) {
 		Question q = new Question();
 		q.setSubject(string);
@@ -36,19 +36,19 @@ public class QuestionService { //INSERT, SELECT, UPDATE, DELETE 등의 역할
 		q.setAuthor(user);
 		this.questionRepository.save(q);
 	}
-	
-	public Page<Question> getList(int page){
+
+	public Page<Question> getList(int page) {
 		List<Sort.Order> sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("createDate"));
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 		return this.questionRepository.findAll(pageable);
 	}
-	
+
 	public Question getQuestion(Integer id) {
 		Optional<Question> question = this.questionRepository.findById(id);
-		if(question.isPresent()) {
+		if (question.isPresent()) {
 			return question.get();
-		}else {
+		} else {
 			throw new DataNotFoundException("질문이 존재하지 않습니다.");
 		}
 	}

@@ -23,35 +23,35 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
- // SecurityFilterChain: 필터 체인을 정의하여 HTTP 요청에 대한 보안 설정을 구성합니다.
- // 스프링 시큐리티 5.x부터는 SecurityFilterChain을 사용해 설정하는 것이 권장됩니다.
- @Bean
- SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-     // HttpSecurity 객체를 사용해 보안 규칙을 설정합니다.
-     http.authorizeHttpRequests( 
-         // authorizeHttpRequests는 HTTP 요청의 접근 권한을 설정합니다.
-         (authorizeHttpRequests) -> authorizeHttpRequests
-             // AntPathRequestMatcher를 사용해 특정 경로에 대한 접근 권한을 설정합니다.
-             // requestMatchers("/**")는 모든 경로에 대해 접근을 허용합니다.
-             .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-     		.formLogin((formLogin)->formLogin.loginPage("/user/login").defaultSuccessUrl("/"))
-     		
-     		.logout((logout)->logout.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-     				.logoutSuccessUrl("/").invalidateHttpSession(true));
+	// SecurityFilterChain: 필터 체인을 정의하여 HTTP 요청에 대한 보안 설정을 구성합니다.
+	// 스프링 시큐리티 5.x부터는 SecurityFilterChain을 사용해 설정하는 것이 권장됩니다.
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		// HttpSecurity 객체를 사용해 보안 규칙을 설정합니다.
+		http.authorizeHttpRequests(
+				// authorizeHttpRequests는 HTTP 요청의 접근 권한을 설정합니다.
+				(authorizeHttpRequests) -> authorizeHttpRequests
+						// AntPathRequestMatcher를 사용해 특정 경로에 대한 접근 권한을 설정합니다.
+						// requestMatchers("/**")는 모든 경로에 대해 접근을 허용합니다.
+						.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+				.formLogin((formLogin) -> formLogin.loginPage("/user/login").defaultSuccessUrl("/"))
 
-     // 설정이 완료된 HttpSecurity 객체를 필터 체인으로 반환합니다.
-     return http.build();
- }
- 
- @Bean
- PasswordEncoder passwordEncoder() {
-	 return new BCryptPasswordEncoder();
- }
- 
- @Bean
- AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-	 return authenticationConfiguration.getAuthenticationManager();
- }
- 
+				.logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+						.logoutSuccessUrl("/").invalidateHttpSession(true));
+
+		// 설정이 완료된 HttpSecurity 객체를 필터 체인으로 반환합니다.
+		return http.build();
+	}
+
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
 }
