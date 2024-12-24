@@ -1,4 +1,4 @@
-name: Ezen-SpringBoot CICD V5
+name: Ezen-SpringBoot CICD V6
 
 on:
   push:
@@ -57,8 +57,12 @@ jobs:
       - name: Clean Project on EC2
         run: |
           set -e  # 에러 발생 시 즉시 중단
-          ssh $USER@$HOST "cd /home/ubuntu/ezen-springboot/Board && ./gradlew clean"
-
+          ssh $USER@$HOST "
+            cd /home/ubuntu/ezen-springboot/Board
+            chmod +x gradlew  # Gradle Wrapper 실행 권한 추가
+            ./gradlew clean   # Gradle Clean 실행
+            ./gradlew build   # Gradle Build 실행
+          "
       - name: Build Project on EC2
         run: |
           set -e  # 에러 발생 시 즉시 중단
