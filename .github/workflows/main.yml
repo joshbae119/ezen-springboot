@@ -40,9 +40,11 @@ jobs:
             if [ ! -d /home/ubuntu/ezen-springboot/Board ]; then
               git clone https://github.com/<username>/<repository>.git /home/ubuntu/ezen-springboot/Board
             else
-              cd /home/ubuntu/ezen-springboot/Board && git pull
+              echo 'Directory exists. Resetting and pulling latest changes...'
+              cd /home/ubuntu/ezen-springboot/Board
+              git reset --hard HEAD  # 로컬 변경 사항 삭제
+              git pull
             fi
-          "
 
       # 4. Gradle 빌드 전에 설정 파일 복사
       - name: Copy application.properties
