@@ -20,6 +20,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class QuestionService { // INSERT, SELECT, UPDATE, DELETE 등의 역할
 	private final QuestionRepository questionRepository;
+	
+	public void delete(Question question) {
+		this.questionRepository.delete(question);
+	}
 
 	public void modify(Question question, String subject, String content) {
 		question.setSubject(subject);
