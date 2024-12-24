@@ -1,4 +1,4 @@
-name: Ezen-SpringBoot CICD V4
+name: Ezen-SpringBoot CICD V5
 
 on:
   push:
@@ -36,11 +36,12 @@ jobs:
       - name: Update Source Code on EC2
         run: |
           set -e  # 에러 발생 시 즉시 중단
-          ssh $USER@$HOST "
+          ssh $USER@$HOST << 'EOF'
             if [ ! -d /home/ubuntu/ezen-springboot/Board ]; then
+              echo "Directory not found. Cloning repository..."
               git clone https://github.com/<username>/<repository>.git /home/ubuntu/ezen-springboot/Board
             else
-              echo 'Directory exists. Resetting and pulling latest changes...'
+              echo "Directory exists. Resetting and pulling latest changes..."
               cd /home/ubuntu/ezen-springboot/Board
               git reset --hard HEAD  # 로컬 변경 사항 삭제
               git pull
