@@ -35,3 +35,46 @@ out/
 
 ### VS Code ###
 .vscode/
+# Eclipse 설정 파일 제외
+.classpath
+.project
+.settings/
+.metadata/
+bin/
+build/
+
+# Visual Studio Code 설정 파일 제외
+.vscode/
+*.code-workspace
+
+# 빌드 디렉토리
+build/
+bin/
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+target/
+
+# IntelliJ IDEA 설정 파일 제외 (선택 사항)
+.idea/
+*.iml
+out/
+
+# OS별 시스템 파일 제외
+.DS_Store
+Thumbs.db
+
+
+# Eclipse 설정 파일 제외
+.classpath
+.project
+.settings/
+bin/
+build/
+.metadata/
+
+
