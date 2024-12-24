@@ -31,7 +31,7 @@
 			<div class="card-body">
 				<div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
 				<div class="d-flex justify-content-end">
-					<div class="badge bg-light text-dark p-2 text-start">
+					<div class="badge bg-light text-dark p-2 text-start" th:if="${question.modifyDate != null}">
 						<div class="my-2"><span>수정일자</span></div>
 						<div th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
 					</div>
@@ -42,6 +42,15 @@
 				</div>
 				<!--버튼 수정 버튼-->
 				<div class="my-3">
+					
+					<!--추천-->
+					<a href="javascript:void(0);" 
+					th:data-uri="@{|/question/vote/${question.id}|}"
+					class="recommend btn btn-sm btn-outline-secondary"
+					sec:authorize="isAuthenticated()"
+					>추천<span class="badge rounded-pill bg-success" th:text="10"></span></a>
+					
+					<!--수정-->
 					<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
 					sec:authorize="isAuthenticated()"
 					th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
@@ -66,18 +75,24 @@
 			<div class="card-body">
 				<div class = "card-text" style = "white-space: pre-line;" th:text="${answer.content}"></div>
 				<div class="d-flex justify-content-end">
-					<div class="badge bg-light text-dark p-2 text-start">
+					<div class="badge bg-light text-dark p-2 text-start" th:if="${answer.modifyDate != null}">
 						<div class="my-2"><span>수정일자</span></div>
 						<div th:text="${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
 					</div>
 					<div class="badge bg-light text-dark p-2 text-start">
 						<div class="my-2"><span th:if="${answer.author != null}" th:text="${answer.author.username}"></span></div>
-						<div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 						<div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 					</div>					
 				</div>
 				<!--수정버튼-->
 				<div class="my-3">
+					<!--추천-->
+					<a href="javascript:void(0);" 
+					th:data-uri="@{|/answer/vote/${question.id}|}"
+					class="recommend btn btn-sm btn-outline-secondary"
+					sec:authorize="isAuthenticated()"
+					>추천<span class="badge rounded-pill bg-success" th:text="10"></span></a>
+					<!--삭제-->
 					<a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
 					sec:authorize="isAuthenticated()"
 					th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
@@ -122,5 +137,15 @@
 			};
 		});
 	});
+	
+	const recommend_elements = document.getElementsByClassName("recommend");
+	Array.from(recommend_elements).forEach(function(element){
+		element.addEventListener('click', function(){
+			if(confirm("추천하시겠습니까?")){
+				location.href = this.dataset.uri;
+			};
+		});
+	});
 </script>
 </body>
+</html>
