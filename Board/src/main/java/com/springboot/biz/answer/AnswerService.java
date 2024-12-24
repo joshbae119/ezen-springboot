@@ -16,6 +16,10 @@ import lombok.RequiredArgsConstructor;
 public class AnswerService {
 
 	private final AnswerRepository answerRepository;
+	
+	public void delete(Answer answer) {
+		this.answerRepository.delete(answer);
+	}
 
 	public void modify(Answer answer, String content) {
 		answer.setContent(content);
