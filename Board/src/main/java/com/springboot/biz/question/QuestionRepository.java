@@ -15,7 +15,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
 	// Question findById(int id);
 
-	// OR > findBySubjectOrContent
+	// OR > findBySubjectOrContent ㅇㅇ
 	Question findBySubjectAndContent(String subject, String content);
 
 	List<Question> findBySubjectLike(String subject);
