@@ -32,20 +32,28 @@ public class AnswerController {
 	private final UserService userService;
 
 	/*
-	 * 55
 	 * @PostMapping("/create/{id}") public String createAnswer(Model
 	 * model, @PathVariable("id") Integer id, @RequestParam(value = "content")
 	 * String content) { Question question = this.questionService.getQuestion(id);
 	 * this.answerService.create(question, content); return
 	 * String.format("redirect:/question/detail/%s", id); }
 	 */
-	
-	//답변 삭제
+	// 답변 삭제
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/vote/{id}")
+	public String ansewrVote(@PathVariable("id") Integer id, Principal principal) {
+		Answer answer = this.answerService.getAnswer(id);
+		SiteUser siteUser = this.userService.getUser(principal.getName());
+		this.answerService.vote(answer, siteUser);
+		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+	}
+
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{id}")
 	public String answerDelete(@PathVariable("id") Integer id, Principal principal) {
 		Answer answer = this.answerService.getAnswer(id);
-		if(!answer.getAuthor().getUsername().equals(principal.getName())) {
+		if (!answer.getAuthor().getUsername().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
 		}
 		this.answerService.delete(answer);
@@ -58,7 +66,7 @@ public class AnswerController {
 			BindingResult bindingResult, Principal principal) {
 		Question question = this.questionService.getQuestion(id);
 		SiteUser siteUser = this.userService.getUser(principal.getName());
-		if(bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			model.addAttribute("question", question);
 			return "question_detail";
 
@@ -76,7 +84,7 @@ public class AnswerController {
 	@GetMapping("/modify/{id}")
 	public String answerModify(AnswerForm answerForm, @PathVariable("id") Integer id, Principal principal) {
 		Answer answer = this.answerService.getAnswer(id);
-		if(!answer.getAuthor().getUsername().equals(principal.getName())) {
+		if (!answer.getAuthor().getUsername().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
 		}
 		answerForm.setContent(answer.getContent());
@@ -85,12 +93,13 @@ public class AnswerController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{id}")
-	public String answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id) {
-		if(bindingResult.hasErrors()) {
+	public String answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal,
+			@PathVariable("id") Integer id) {
+		if (bindingResult.hasErrors()) {
 			return "answer_form";
 		}
 		Answer answer = this.answerService.getAnswer(id);
-		if(!answer.getAuthor().getUsername().equals(principal.getName())) {
+		if (!answer.getAuthor().getUsername().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
 		}
 		this.answerService.modify(answer, answerForm.getContent());

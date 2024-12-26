@@ -16,7 +16,12 @@ import lombok.RequiredArgsConstructor;
 public class AnswerService {
 
 	private final AnswerRepository answerRepository;
-	
+
+	public void vote(Answer answer, SiteUser siteuser) {
+		answer.getVoter().add(siteuser);
+		this.answerRepository.save(answer);
+	}
+
 	public void delete(Answer answer) {
 		this.answerRepository.delete(answer);
 	}
