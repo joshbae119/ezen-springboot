@@ -102,9 +102,12 @@ public class QuestionController { // 서비스 함수를 가져다가 화면에 
 	 */
 
 	@GetMapping("/list") // 컨트롤러에는 이런 요청이 들어왔을때 어떤 작업을 할지가 들어간다. 겟매핑처럼..
-	public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-		Page<Question> paging = this.questionService.getList(page);
+	public String list(Model model, 
+					@RequestParam(value = "page", defaultValue = "0") int page,
+					@RequestParam(value = "kw", defaultValue = "") String kw) {
+		Page<Question> paging = this.questionService.getList(page, kw);
 		model.addAttribute("paging", paging);
+		model.addAttribute("kw", kw);
 		return "question_list";
 	}
 

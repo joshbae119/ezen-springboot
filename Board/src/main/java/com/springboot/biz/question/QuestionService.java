@@ -46,11 +46,11 @@ public class QuestionService { // INSERT, SELECT, UPDATE, DELETE 등의 역할
 		this.questionRepository.save(q);
 	}
 
-	public Page<Question> getList(int page) {
+	public Page<Question> getList(int page, String kw) {
 		List<Sort.Order> sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("createDate"));
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-		return this.questionRepository.findAll(pageable);
+		return this.questionRepository.findAllByKeyword(kw, pageable);
 	}
 
 	public Question getQuestion(Integer id) {
