@@ -21,7 +21,7 @@ public class UserService {
 		if (siteUser.isPresent()) {
 			return siteUser.get();
 		} else {
-			throw new DataNotFoundException("회원을 찾을 수 없습니다.");
+			throw new DataNotFoundException("입력한 회원을 찾을 수 없습니다.");
 		}
 	}
 

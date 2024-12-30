@@ -47,7 +47,7 @@ public class AnswerService {
 		if (answer.isPresent()) {
 			return answer.get();
 		} else {
-			throw new DataNotFoundException("답변이 존재하지 않습니다.");
+			throw new DataNotFoundException("답변이 존재하지 않습니다..");
 		}
 	}
 }

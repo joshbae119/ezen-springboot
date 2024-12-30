@@ -27,7 +27,6 @@ class BoardApplicationTests {
 //		}
 		
 		
-		
 //		Question q1 = new Question();
 //		q1.setSubject("국가");
 //		q1.setContent("미국이 있습니다.");

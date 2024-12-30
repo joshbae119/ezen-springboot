@@ -11,17 +11,9 @@ import org.springframework.data.repository.query.Param;
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
 	Page<Question> findAll(Pageable Pagaable);
-
-	// SELECT * FROM QUESTION WHERE subject = ?
 	Question findBySubject(String subject);
-
-	// Question findById(int id);
-
-	// OR > findBySubjectOrContent ㅇㅇdd
 	Question findBySubjectAndContent(String subject, String content);
-
 	List<Question> findBySubjectLike(String subject);
-	
     @Query(  "select distinct q  from Question q "
             + "left outer join SiteUser u1 on q.author=u1 "
             + "left outer join Answer a on a.question=q "

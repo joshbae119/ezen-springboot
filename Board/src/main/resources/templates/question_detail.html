@@ -1,32 +1,15 @@
-<!--<center>
-   <h1 th:text="${question.subject}"></h1>
-   <div th:text="${question.content}"></div>
-   <br>
-   <form th:action="@{|/answer/create/${question.id}|}" method="post">
-      <textarea name ="content" id="content" rows="5" cols="40"></textarea>
-      <br>
-      <br>
-      <input type="submit" value="답변등록">
-   </form>
-</center>
--->
-
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>답변 페이지</title>
+<title>답변페이지</title>
 <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-<!--<link rel="stylesheet" type="text/css" th:href="@{/text.css}">-->
 </head>
 <body>
 	<div layout:fragment="content" class="container my-3">
 		<div class="center-container">
-
-			<!--질문-->
 			<h1 th:text="${question.subject}"></h1>
-
 			<div class="card my-3">
 				<div class="card-body">
 					<div class="card-text" style="white-space: pre-line;"
@@ -49,43 +32,29 @@
 								th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 						</div>
 					</div>
-					<!--버튼 수정 버튼-->
 					<div class="my-3">
-
-						<!--추천-->
 						<a href="javascript:void(0);"
 							th:data-uri="@{|/question/vote/${question.id}|}"
 							class="recommend btn btn-sm btn-outline-secondary"
 							sec:authorize="isAuthenticated()">추천<span
 							class="badge rounded-pill bg-success"
-							th:text="${#lists.size(question.voter)}"></span></a>
-
-						<!--수정-->
-						<a th:href="@{|/question/modify/${question.id}|}"
+							th:text="${#lists.size(question.voter)}"></span></a> <a
+							th:href="@{|/question/modify/${question.id}|}"
 							class="btn btn-sm btn-outline-secondary"
 							sec:authorize="isAuthenticated()"
 							th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
-							th:text="수정"></a>
-						<!--그냥 아무 의미없이 자바스크립트로 넘겨줄거야. 일단 URL이 바뀌면 안되니까..!-->
-						<a href="javascript:void(0);"
+							th:text="수정"></a> <a href="javascript:void(0);"
 							th:data-uri="@{|/question/delete/${question.id}|}"
 							class="delete btn btn-sm btn-outline-secondary"
 							sec:authorize="isAuthenticated()"
 							th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
 							th:text="삭제"></a>
-
 					</div>
 				</div>
 			</div>
-
-
-			<!--답변 개수 표시-->
 			<h5 class="border-bottom py-2"
 				th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
-
-			<!--답변 반복 시작-->
 			<div class="card my-3" th:each="answer : ${question.answerList}">
-				<!-- 엥커기능 추가 -->
 				<a th:id="|answer_${answer.id}|"></a>
 				<div class="card-body">
 					<div class="card-text" style="white-space: pre-line;"
@@ -94,7 +63,7 @@
 						<div class="badge bg-light text-dark p-2 text-start"
 							th:if="${answer.modifyDate != null}">
 							<div class="my-2">
-								<span>수정일자</span>
+								<span>수정 일자</span>
 							</div>
 							<div
 								th:text="${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
@@ -108,24 +77,18 @@
 								th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 						</div>
 					</div>
-					<!--수정버튼-->
 					<div class="my-3">
-						<!--추천-->
 						<a href="javascript:void(0);"
 							th:data-uri="@{|/answer/vote/${answer.id}|}"
 							class="recommend btn btn-sm btn-outline-secondary"
 							sec:authorize="isAuthenticated()">추천<span
 							class="badge rounded-pill bg-success"
-							th:text="${#lists.size(answer.voter)}"></span></a>
-
-						<!--삭제-->
-						<a th:href="@{|/answer/modify/${answer.id}|}"
+							th:text="${#lists.size(answer.voter)}"></span></a> <a
+							th:href="@{|/answer/modify/${answer.id}|}"
 							class="btn btn-sm btn-outline-secondary"
 							sec:authorize="isAuthenticated()"
 							th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
-							th:text="수정"></a>
-						<!--삭제임-->
-						<a href="javascript:void(0);"
+							th:text="수정"></a> <a href="javascript:void(0);"
 							th:data-uri="@{|/answer/delete/${answer.id}|}"
 							class="delete btn btn-sm btn-outline-secondary"
 							sec:authorize="isAuthenticated()"
@@ -134,29 +97,17 @@
 					</div>
 				</div>
 			</div>
-			<!--답변 반복 끝-->
-
-
-
-			<!--답변 작성-->
 			<form class="my-3" th:action="@{|/answer/create/${question.id}|}"
 				method="post" th:object="${answerForm}">
-				<!--<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-						<div th:each="err:${#fields.allErrors()}" th:text="${err}"></div>
-				</div>
-			-->
 				<div th:replace="~{form_errors::formErrorsFragment}"></div>
-
-
 				<textarea sec:authorize="isAnonymous()" disabled
 					class="form-control" th:field="*{content}" rows="5" cols="40"
-					placeholder="여기에 답변을 입력하세요."></textarea>
+					placeholder="여기에 답변을 입력 하세요."></textarea>
 				<textarea sec:authorize="isAuthenticated()" class="form-control"
 					th:field="*{content}" rows="5" cols="40"
-					placeholder="여기에 답변을 입력하세요."></textarea>
-
+					placeholder="여기에 답변을 입력 하세요."></textarea>
 				<br> <br> <input class="btn btn-primary" type="submit"
-					value="답변등록">
+					value="답변 등록">
 			</form>
 		</div>
 	</div>
@@ -164,17 +115,16 @@
 		const delete_elements = document.getElementsByClassName("delete");
 		Array.from(delete_elements).forEach(function(element) {
 			element.addEventListener('click', function() {
-				if (confirm("삭제하시겠습니까?")) {
+				if (confirm("삭제 하시겠습니까?")) {
 					location.href = this.dataset.uri;
 				}
 				;
 			});
 		});
-
 		const recommend_elements = document.getElementsByClassName("recommend");
 		Array.from(recommend_elements).forEach(function(element) {
 			element.addEventListener('click', function() {
-				if (confirm("추천하시겠습니까?")) {
+				if (confirm("추천 하시겠습니까?")) {
 					location.href = this.dataset.uri;
 				}
 				;

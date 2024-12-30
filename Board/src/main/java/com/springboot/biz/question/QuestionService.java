@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class QuestionService { // INSERT, SELECT, UPDATE, DELETE 등의 역할
+public class QuestionService { 
 	private final QuestionRepository questionRepository;
 
 	public void vote(Question question, SiteUser siteuser) {
@@ -58,7 +58,7 @@ public class QuestionService { // INSERT, SELECT, UPDATE, DELETE 등의 역할
 		if (question.isPresent()) {
 			return question.get();
 		} else {
-			throw new DataNotFoundException("질문이 존재하지 않습니다.");
+			throw new DataNotFoundException("질문이 존재 하지 않습니다.");
 		}
 	}
 }

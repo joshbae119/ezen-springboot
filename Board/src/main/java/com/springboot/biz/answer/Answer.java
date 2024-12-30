@@ -23,25 +23,24 @@ import lombok.Setter;
 @Entity
 public class Answer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(columnDefinition = "TEXT")
-    private String content;
+	@Column(columnDefinition = "TEXT")
+	private String content;
 
-    @CreatedDate
-    private LocalDateTime createDate;
+	@CreatedDate
+	private LocalDateTime createDate;
 
-    @ManyToOne
-    private Question question;
+	@ManyToOne
+	private Question question;
 
-    @ManyToOne
-    private SiteUser author;
+	@ManyToOne
+	private SiteUser author;
 
-    //수정시간
-    private LocalDateTime modifyDate;
+	private LocalDateTime modifyDate;
 
-    @ManyToMany
-    Set<SiteUser> voter;
+	@ManyToMany
+	Set<SiteUser> voter;
 }
